@@ -128,6 +128,7 @@ const loader = async () => {
 
     // const id = csvArray[i].id;
     
+    console.log('params: ', JSON.stringify(params))
 
     const dynamoContentParams = {
       Key: {
