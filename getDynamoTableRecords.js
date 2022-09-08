@@ -9,16 +9,18 @@ module.exports.getDynamoTableRecords = async (tableName, dynamodb) => {
     }
 
     try {
-      let dataScan = await dynamodb.scan(params).promise().then(
-          result => ddbData = result.Items
-      )
-      
-    } catch (err) {
+        let data = await dynamodb.scan(params).promise().then(response => {
+            ddbData = response.Items
+        });
+        
+      }
+    catch (err) {
       console.log(err);
-    }
-    return ddbData;
-   
+    } 
+   return ddbData
+
   };
+
 
 
 
