@@ -4,7 +4,7 @@
 const { csvToJson } = require("./csvToJson");
 const { getAllowedProperties } = require('./getAllowedProperties');
 const { removeIrrelevantPropertiesFromCsvObjects } = require('./removeIrrelevantPropertiesFromCsvObjects');
-
+const { getDynamoTableRecords } = require('./getDynamoTableRecords');
 
 // Load the AWS SDK for Node.js
 const AWS = require("aws-sdk");
@@ -41,10 +41,10 @@ const processFile = async () => {
         
         // // get all data that exists in the DB for this table
         // const args = getArgumentsFromCommandLine();
-        // const existingRecords = await GetDynamoTableRecords(args);
+        const existingRecords = await getDynamoTableRecords(tableName, dynamodb);
 
         // //reconcile rows with csvObjects
-        // const { deletedRows, updatedRows } = await deletedRowsFromDynamoTable(trimmedCsvObjects, existingRecords);
+        // const { deletedRows, updatedRows } = await reconcileTableToObjects(trimmedCsvObjects, existingRecords);
         // const dbDeleteResults = await deleteRowsFromDynamoTable(deletedRows);
         // const dbUpdateResults = await updateRowsInDynamoTable(updatedRows);
 
