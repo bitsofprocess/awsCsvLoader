@@ -53,8 +53,8 @@ module.exports.getAllowedProperties = async (game_code) => {
     case "TOT":
         column_names = ["id", "category", "word"];
         break;
-    // default:
-    // code block
+    default:
+        console.log('Requested game code not present.')
     };
 
     return column_names;
