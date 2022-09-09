@@ -1,14 +1,10 @@
-// Load the AWS SDK for Node.js
-const AWS = require("aws-sdk");
 const _ = require('lodash');
 
-module.exports.reconcileTableToObjects = async (trimmedCsvObjects, existingRecords) => {
+module.exports.getItemsToProcess = async (trimmedCsvObjects, existingRecords) => {
     try {
- 
-        let dynamoItemsToUpdate = {
-            itemsToDelete: [],
-            itemsToAddOrUpdate: []
-        }
+        
+        let itemsToProcess = [];
+
 
         // adds itemsToDelete to dynamoItemsToUpdate table
         let dynamoIds =[];
@@ -18,13 +14,19 @@ module.exports.reconcileTableToObjects = async (trimmedCsvObjects, existingRecor
         trimmedCsvObjects.forEach(element => csvIds.push(element.id));
         
         let idsToDeleteFromDynamo = dynamoIds.filter(id => !csvIds.includes(id));
-        
-        existingRecords.forEach(element => {
-            if (idsToDeleteFromDynamo.includes(element.id)) {
-                let formattedElement = { PutRequest: {Item: {element}}}
-                dynamoItemsToUpdate.itemsToDelete.push(element)
-            }
-        })
+
+        // idsToDeleteFromDynamo.map(id => dynamoItemsToUpdate.itemsToDelete.push({DeleteRequest: {Key: {id}}}))
+        idsToDeleteFromDynamo.map(id => itemsToProcess.push({DeleteRequest: {Key: {id}}}))
+
+        // returns whole item to be deleted:
+
+        // existingRecords.forEach(element => {
+        //     if (idsToDeleteFromDynamo.includes(element.id)) {
+        //         let formattedElement = { PutRequest: {Item: {element}}}
+        //         dynamoItemsToUpdate.itemsToDelete.push(element)
+        //     }
+        // })
+
 
         // looks for matching ids, compare content, adds differing csvContent to dynamoItemsToUpdate.itemsToAddOrUpdate
         let recordsId 
@@ -36,7 +38,7 @@ module.exports.reconcileTableToObjects = async (trimmedCsvObjects, existingRecor
                 if (!_.isEqual(element, trimmedCsvObjects[index])) {
                     Item = trimmedCsvObjects[index]
                     let PutRequest = { PutRequest: {Item}}
-                    dynamoItemsToUpdate.itemsToAddOrUpdate.push(PutRequest);
+                    itemsToProcess.push(PutRequest);
                 }
             } 
         })
@@ -48,15 +50,15 @@ module.exports.reconcileTableToObjects = async (trimmedCsvObjects, existingRecor
         // if id exists in csv, but not in dynamo, add object to dynamoItemsToUpdate.itemsToAddOrUpdate
         trimmedCsvObjects.forEach(element => {
             if (csvIdsNotInDynamo.includes(element.id)) {
-                dynamoItemsToUpdate.itemsToAddOrUpdate.push(element)
+                Item = element
+                itemsToProcess.push({ PutRequest: {Item}})
             }
         })
 
-        return dynamoItemsToUpdate
+        return itemsToProcess
 
     } catch (ex) {
         console.error(ex);
         throw new Error(ex);
     }
 }
-
