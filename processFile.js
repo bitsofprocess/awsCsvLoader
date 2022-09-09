@@ -47,7 +47,8 @@ const processFile = async () => {
         // //reconcile rows with csvObjects
         // console.log('trimmedCsvObjects: ', trimmedCsvObjects);
         // console.log('existingRecords: ', existingRecords)
-        // const { deletedRows, updatedRows } = await reconcileTableToObjects(trimmedCsvObjects, existingRecords);
+        const { itemsToDelete, itemsToAddOrUpdate } = await reconcileTableToObjects(trimmedCsvObjects, existingRecords);
+        
         // const dbDeleteResults = await deleteRowsFromDynamoTable(deletedRows);
         // const dbUpdateResults = await updateRowsInDynamoTable(updatedRows);
 

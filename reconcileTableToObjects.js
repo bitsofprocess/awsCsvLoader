@@ -1,51 +1,10 @@
-"use strict";
-
-//imports
-const { csvToJson } = require("./csvToJson");
-const { getAllowedProperties } = require('./getAllowedProperties');
-const { removeIrrelevantPropertiesFromCsvObjects } = require('./removeIrrelevantPropertiesFromCsvObjects');
-const { getDynamoTableRecords } = require('./getDynamoTableRecords');
-
-
 // Load the AWS SDK for Node.js
 const AWS = require("aws-sdk");
-// const csv = require("csvtojson");
-const _ = require("lodash");
+const _ = require('lodash');
 
-
-const csvFilePath = process.argv[2];
-const game_code = process.argv[3];
-const tableName = process.argv[4];
-const myCredentials = {
-  accessKeyId: process.argv[5],
-  secretAccessKey: process.argv[6],
-};
-// Set the region
-// AWS.config.update({region: 'us-east-1'});
-AWS.config = new AWS.Config({
-  credentials: myCredentials,
-  region: "us-east-1",
-});
-
-// Create DynamoDB service object
-// var ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
-const dynamodb = new AWS.DynamoDB.DocumentClient();
-const reconcileTableToObjects = async () => {
+module.exports.reconcileTableToObjects = async (trimmedCsvObjects, existingRecords) => {
     try {
-        // create objects from csv
-        const csvObjects = await csvToJson(csvFilePath);
-
-        // trim extra properties from csv objects
-
-        const allowedProperties = await getAllowedProperties(game_code);
-        const trimmedCsvObjects = await removeIrrelevantPropertiesFromCsvObjects(csvObjects, allowedProperties);
-        
-        // // get all data that exists in the DB for this table
-        // const args = getArgumentsFromCommandLine();
-        const existingRecords = await getDynamoTableRecords(tableName, dynamodb);
-        
-        // *** NEW FUNCTION STARTS HERE  ***
-        
+ 
         let dynamoItemsToUpdate = {
             itemsToDelete: [],
             itemsToAddOrUpdate: []
@@ -82,14 +41,14 @@ const reconcileTableToObjects = async () => {
         // find ids that exist in csv, but not in dynamo
         let csvIdsNotInDynamo = []
         csvIdsNotInDynamo = csvIds.filter(id => !dynamoIds.includes(id));
-        console.log('csvIdsNotInDynamo: ', csvIdsNotInDynamo)
+        
         // if id exists in csv, but not in dynamo, add object to dynamoItemsToUpdate.itemsToAddOrUpdate
         trimmedCsvObjects.forEach(element => {
             if (csvIdsNotInDynamo.includes(element.id)) {
                 dynamoItemsToUpdate.itemsToAddOrUpdate.push(element)
             }
         })
-        
+
         return dynamoItemsToUpdate
 
     } catch (ex) {
@@ -98,4 +57,3 @@ const reconcileTableToObjects = async () => {
     }
 }
 
-reconcileTableToObjects()
