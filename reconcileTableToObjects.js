@@ -79,10 +79,18 @@ const reconcileTableToObjects = async () => {
             } 
         })
 
-    // put all ids that exist in dynamo in an array (idsInDyanmoToDelete)
-    // if id exists in csv, remove from idsInDyanmoToDelete
-
-
+        // find ids that exist in csv, but not in dynamo
+        let csvIdsNotInDynamo = []
+        csvIdsNotInDynamo = csvIds.filter(id => !dynamoIds.includes(id));
+        console.log('csvIdsNotInDynamo: ', csvIdsNotInDynamo)
+        // if id exists in csv, but not in dynamo, add object to dynamoItemsToUpdate.itemsToAddOrUpdate
+        trimmedCsvObjects.forEach(element => {
+            if (csvIdsNotInDynamo.includes(element.id)) {
+                dynamoItemsToUpdate.itemsToAddOrUpdate.push(element)
+            }
+        })
+        
+        return dynamoItemsToUpdate
 
     } catch (ex) {
         console.error(ex);
