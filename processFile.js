@@ -1,12 +1,12 @@
 "use strict";
 
 //imports
-const { csvToJson } = require("./csvToJson");
-const { getAllowedProperties } = require('./getAllowedProperties');
-const { removeIrrelevantPropertiesFromCsvObjects } = require('./removeIrrelevantPropertiesFromCsvObjects');
-const { getDynamoTableRecords } = require('./getDynamoTableRecords');
-const { getItemsToProcess } = require('./getItemsToProcess');
-const { updateDynamoDb } = require('./updateDynamoDb');
+const { csvToJson } = require("./functions/csvToJson");
+const { getAllowedProperties } = require('./functions/getAllowedProperties');
+const { removeIrrelevantPropertiesFromCsvObjects } = require('./functions/removeIrrelevantPropertiesFromCsvObjects');
+const { getDynamoTableRecords } = require('./functions/getDynamoTableRecords');
+const { getItemsToProcess } = require('./functions/getItemsToProcess');
+const { updateDynamoDb } = require('./functions/updateDynamoDb');
 
 const _ = require("lodash");
 
