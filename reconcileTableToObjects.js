@@ -21,6 +21,7 @@ module.exports.reconcileTableToObjects = async (trimmedCsvObjects, existingRecor
         
         existingRecords.forEach(element => {
             if (idsToDeleteFromDynamo.includes(element.id)) {
+                let formattedElement = { PutRequest: {Item: {element}}}
                 dynamoItemsToUpdate.itemsToDelete.push(element)
             }
         })
@@ -33,7 +34,9 @@ module.exports.reconcileTableToObjects = async (trimmedCsvObjects, existingRecor
 
             if (index >= 0 && element.id === recordsId) {
                 if (!_.isEqual(element, trimmedCsvObjects[index])) {
-                    dynamoItemsToUpdate.itemsToAddOrUpdate.push(trimmedCsvObjects[index]);
+                    Item = trimmedCsvObjects[index]
+                    let PutRequest = { PutRequest: {Item}}
+                    dynamoItemsToUpdate.itemsToAddOrUpdate.push(PutRequest);
                 }
             } 
         })

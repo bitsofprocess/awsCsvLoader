@@ -49,9 +49,12 @@ const processFile = async () => {
         // console.log('existingRecords: ', existingRecords)
         const { itemsToDelete, itemsToAddOrUpdate } = await reconcileTableToObjects(trimmedCsvObjects, existingRecords);
         
+        // const DynamoTableResponse = await updateDynamoDb(itemsToDelete, itemsToAddOrUpdate);
+ 
+
         // const dbDeleteResults = await deleteRowsFromDynamoTable(deletedRows);
         // const dbUpdateResults = await updateRowsInDynamoTable(updatedRows);
-
+    
     } catch (ex) {
         console.error(ex);
         throw new Error(ex);
