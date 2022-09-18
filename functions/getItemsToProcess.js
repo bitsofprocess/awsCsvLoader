@@ -7,7 +7,7 @@ module.exports.getItemsToProcess = async (trimmedCsvObjects, existingRecords) =>
 
 
         // adds itemsToDelete to dynamoItemsToUpdate table
-        let dynamoIds =[];
+        let dynamoIds = [];
         existingRecords.forEach(element => dynamoIds.push(element.id))
 
         let csvIds = [];
@@ -28,11 +28,11 @@ module.exports.getItemsToProcess = async (trimmedCsvObjects, existingRecords) =>
         // })
 
 
-        // looks for matching ids, compare content, adds differing csvContent to dynamoItemsToUpdate.itemsToAddOrUpdate
+        // looks for matching ids, compare content, adds differing csvContent to itemsToProcess
         let recordsId 
         existingRecords.forEach((element) => {
             recordsId = element.id;
-            let index = trimmedCsvObjects.findIndex(element => element.id === recordsId)
+            let index = trimmedCsvObjects.findIndex(csvElement => csvElement.id === recordsId)
 
             if (index >= 0 && element.id === recordsId) {
                 if (!_.isEqual(element, trimmedCsvObjects[index])) {
