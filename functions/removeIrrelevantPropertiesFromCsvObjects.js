@@ -1,7 +1,7 @@
-module.exports.removeIrrelevantPropertiesFromCsvObjects = async (csvObjects, allowedProperties) => {
- 
+module.exports.removeIrrelevantPropertiesFromCsvObjects = async (formattedCsvObjects, allowedProperties) => {
+
     let filteredCsvObjects = [];
-    csvObjects.forEach(
+    formattedCsvObjects.forEach(
         (element, index) =>
           (filteredCsvObjects[index] = Object.fromEntries(
             Object.entries(element).filter((element) =>

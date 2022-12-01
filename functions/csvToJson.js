@@ -2,7 +2,7 @@ const csv = require('csvtojson');
 
 module.exports.csvToJson = async (csvFilePath) => {
     try {
-        const data = await csv().fromFile(csvFilePath);
+        const data = await csv({checkType: true}).fromFile(csvFilePath);
 
         // log the JSON array
         return data;
