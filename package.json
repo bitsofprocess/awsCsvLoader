@@ -1,0 +1,22 @@
+{
+  "name": "awscsvloader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "processFile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitsofprocess/awsCsvLoader.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bitsofprocess/awsCsvLoader/issues"
+  },
+  "homepage": "https://github.com/bitsofprocess/awsCsvLoader#readme",
+  "dependencies": {
+    "csvtojson": "^2.0.10"
+  }
+}

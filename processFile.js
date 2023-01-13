@@ -13,7 +13,7 @@ const _ = require("lodash");
 
 // Load the AWS SDK for Node.js
 const AWS = require("aws-sdk");
-const { ChimeSDKMessaging } = require('aws-sdk');
+// const { ChimeSDKMessaging } = require('aws-sdk');
 
 const csvFilePath = process.argv[2];
 const game_code = process.argv[3];
