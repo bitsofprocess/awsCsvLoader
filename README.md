@@ -1,1 +1,3 @@
 # awsCsvLoader
+node .\processFile.js CSV_FILEPATH GAME_CODE TABLENAME AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
+node .\processFile.js .\LT5.csv LT lt-dev AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY

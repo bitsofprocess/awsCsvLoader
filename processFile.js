@@ -48,7 +48,7 @@ const processFile = async () => {
         // console.log(existingRecords)
         const itemsToProcess = await getItemsToProcess(trimmedCsvObjects, existingRecords);
 
-        // console.log(itemsToProcess)
+        console.log(itemsToProcess[0])
         const DynamoTableResponse = await updateDynamoDb(itemsToProcess, tableName, dynamodb);
       
         

@@ -20,7 +20,13 @@ module.exports.getAllowedProperties = async (game_code) => {
         column_names = ["id", "points", "question", "special"];
         break;
     case "LT":
-        column_names = ["id", "answers", "correct_answer", "question"];
+        column_names = [
+            "id", 
+            "answers", 
+            "correct_answer", 
+            "question", 
+            "edition"
+        ];
         break;
     case "NOW":
         column_names = ["id", "word"];
